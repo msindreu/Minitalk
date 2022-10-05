@@ -6,13 +6,24 @@
 /*   By: msindreu <msindreu@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 18:19:39 by msindreu          #+#    #+#             */
-/*   Updated: 2022/10/04 18:27:58 by msindreu         ###   ########.fr       */
+/*   Updated: 2022/10/04 18:47:49 by msindreu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <signal.h>
 #include <stdio.h>
+
+static void	ft_handle(int	sig, siginfo_t *info, void *contect)
+{
+
+
+
+
+}
+
+
+
 
 int	main()
 {

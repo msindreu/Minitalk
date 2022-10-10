@@ -6,10 +6,12 @@
 /*   By: msindreu <msindreu@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 18:19:39 by msindreu          #+#    #+#             */
-/*   Updated: 2022/10/10 12:47:12 by msindreu         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:47:58 by msindreu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../lib/printf/lib/ft_printf.h"
+#include "../lib/Libft/libft.h"
 #include <unistd.h>
 #include <signal.h>
 #include <stdio.h>
@@ -31,7 +33,9 @@ void	ft_handle(int sig, siginfo_t *info, void *context)
 	if (client_pid != info->si_pid && info->si_pid != 0)
 		client_pid = info->si_pid;
 	if (sig == SIGUSR1)
-		printf("Senyal 1 rebuda.\n");
+	{	printf("Senyal 1 rebuda.\n");
+		printf("valor SIGUSR1:%d\n", sig);
+	}
 	if (sig == SIGUSR2)
 		printf("Senyal2 rebuda.\n");
 }

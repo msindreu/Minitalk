@@ -6,7 +6,7 @@
 /*   By: msindreu <msindreu@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 18:19:39 by msindreu          #+#    #+#             */
-/*   Updated: 2022/10/07 17:53:26 by msindreu         ###   ########.fr       */
+/*   Updated: 2022/10/10 12:47:12 by msindreu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,26 @@
 #include <signal.h>
 #include <stdio.h>
 
-void	ft_handle(int	sig)//, siginfo_t *info, void *context)
+
+/*typedef struct s_client{
+	int	pid;
+
+
+
+}	t_client;
+*/
+void	ft_handle(int sig, siginfo_t *info, void *context)
 {
-	static pid_t 
-
-
+	static	pid_t	client_pid;
+	
+	client_pid = 0;
 	(void)context;
-	(void)sig;
+	if (client_pid != info->si_pid && info->si_pid != 0)
+		client_pid = info->si_pid;
 	if (sig == SIGUSR1)
-		printf("Senyal 1 rebuda");
+		printf("Senyal 1 rebuda.\n");
 	if (sig == SIGUSR2)
-		printf("Senyal2 rebuda");
+		printf("Senyal2 rebuda.\n");
 }
 
 int	main()
@@ -34,10 +43,7 @@ int	main()
 	pid = getpid();
 	printf("PID: %d\n", pid);
 	signal.sa_sigaction = ft_handle;
-	//signal.sa_handler = ft_handle;
-	sigemptyset(sigset_t *set);
-//	sigfillset(&signal.sa_mask);
-	signal.sa_flags = 0;
+	signal.sa_flags = SA_RESTART;
 	sigaction(SIGUSR1, &signal, NULL);
 	sigaction(SIGUSR2, &signal, NULL);
 	while (1)

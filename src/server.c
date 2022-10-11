@@ -6,11 +6,11 @@
 /*   By: msindreu <msindreu@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 18:19:39 by msindreu          #+#    #+#             */
-/*   Updated: 2022/10/10 14:47:58 by msindreu         ###   ########.fr       */
+/*   Updated: 2022/10/11 12:05:58 by msindreu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lib/printf/lib/ft_printf.h"
+#include "../lib/ft_printf/lib/ft_printf.h"
 #include "../lib/Libft/libft.h"
 #include <unistd.h>
 #include <signal.h>

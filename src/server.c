@@ -6,7 +6,7 @@
 /*   By: msindreu <msindreu@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 18:19:39 by msindreu          #+#    #+#             */
-/*   Updated: 2022/10/13 18:55:40 by msindreu         ###   ########.fr       */
+/*   Updated: 2022/10/19 18:17:09 by msindreu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,27 +27,29 @@
 void	ft_handle(int sig, siginfo_t *info, void *context)
 {
 	static	pid_t	client_pid;
-	char	byte;
+	static unsigned char	byte;
 	int	i;
 
-	i = 8;
+	i = 0;
 	client_pid = 0;
 	byte = 0;
 	(void)context;
 	if (client_pid != info->si_pid && info->si_pid != 0)
 		client_pid = info->si_pid;
-	while (i > 0 )
+	while (i < 8)
 	{	
 		if (sig == SIGUSR1)
 		{
-			byte = byte >> i & 1; 
-			printf("Senyal 1 rebuda.\n");
+			byte = byte << 1 | 1;
+		   ft_printf("1");
 		}
 		if (sig == SIGUSR2)
-			printf("Senyal2 rebuda.\n");
+		{
+			byte = byte << 1 | 0;
+			ft_printf("0");
+		}
 		i++;
 	}
-	i = 0;
 }
 
 int	main()

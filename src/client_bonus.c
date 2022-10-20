@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msindreu <msindreu@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 18:19:39 by msindreu          #+#    #+#             */
-/*   Updated: 2022/10/20 18:34:36 by msindreu         ###   ########.fr       */
+/*   Created: 2022/10/10 14:31:24 by msindreu          #+#    #+#             */
+/*   Updated: 2022/10/20 19:14:55 by msindreu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,39 +16,46 @@
 #include <signal.h>
 #include <stdio.h>
 
-int		g_byte;
-
-void	ft_handle(int sig, siginfo_t *info, void *context)
+void	ft_handle(int sig)
 {
-	static unsigned char	c;
-
-	(void)context;
-	(void)info;
-	if (sig == SIGUSR1)
-		c = c | 1;
-	g_byte++;
-	if (g_byte == 8)
-	{
-		if ((write(1, &c, 1)) == -1)
-			exit (-1);
-		g_byte = 0;
-	}
-	c = c << 1;
+	
 }
 
-int	main(void)
+void	ft_get_and_send_bits(char c, int pid)
 {
-	int					pid;
-	struct sigaction	signal;
+	int		i;
+	int		signal;
 
-	pid = getpid();
-	g_byte = 0;
-	printf("PID: %d\n", pid);
-	signal.sa_sigaction = ft_handle;
-	signal.sa_flags = SA_RESTART;
-	sigaction(SIGUSR1, &signal, NULL);
-	sigaction(SIGUSR2, &signal, NULL);
-	while (1)
-		pause();
+	i = 0;
+	while (i < 8)
+	{
+		if (c << i & 128)
+			signal = SIGUSR1;
+		else
+			signal = SIGUSR2;
+		if ((kill(pid, signal)) == -1)
+			exit (-1);
+		usleep(300);
+		i++;
+	}
+}
+
+int	main(int argc, char **argv)
+{
+	int	server_pid;
+	int	i;
+
+	if (argc == 3)
+	{
+		signal(SIGUSR1, ft_handle);
+		server_pid = ft_atoi(argv[1]);
+		i = 0;
+		while (argv[2][i] != '\0')
+		{
+			ft_get_and_send_bits(argv[2][i], server_pid);
+			i++;
+		}
+		ft_get_and_send_bits('\0', server_pid);
+	}
 	return (0);
 }

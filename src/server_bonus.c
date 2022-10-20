@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msindreu <msindreu@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 18:19:39 by msindreu          #+#    #+#             */
-/*   Updated: 2022/10/20 18:34:36 by msindreu         ###   ########.fr       */
+/*   Updated: 2022/10/20 19:14:58 by msindreu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,18 @@ void	ft_handle(int sig, siginfo_t *info, void *context)
 	static unsigned char	c;
 
 	(void)context;
-	(void)info;
+	usleep(100);
+	if (sig == SIGUSR2)
+	{
+		if ((kill(info->si_pid, SIGUSR2) == -1))
+			exit (-1);
+	}
 	if (sig == SIGUSR1)
+	{
+		if ((kill(info->si_pid, SIGUSR2)) == -1)
+			exit (-1);
 		c = c | 1;
+	}
 	g_byte++;
 	if (g_byte == 8)
 	{

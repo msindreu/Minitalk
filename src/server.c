@@ -6,7 +6,7 @@
 /*   By: msindreu <msindreu@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 18:19:39 by msindreu          #+#    #+#             */
-/*   Updated: 2022/10/19 18:17:09 by msindreu         ###   ########.fr       */
+/*   Updated: 2022/10/20 18:29:58 by msindreu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,47 +16,33 @@
 #include <signal.h>
 #include <stdio.h>
 
+int		g_byte;
 
-/*typedef struct s_client{
-	int	pid;
-
-
-
-}	t_client;
-*/
 void	ft_handle(int sig, siginfo_t *info, void *context)
 {
-	static	pid_t	client_pid;
-	static unsigned char	byte;
-	int	i;
+	static unsigned char	c;
 
-	i = 0;
-	client_pid = 0;
-	byte = 0;
 	(void)context;
-	if (client_pid != info->si_pid && info->si_pid != 0)
-		client_pid = info->si_pid;
-	while (i < 8)
-	{	
-		if (sig == SIGUSR1)
-		{
-			byte = byte << 1 | 1;
-		   ft_printf("1");
-		}
-		if (sig == SIGUSR2)
-		{
-			byte = byte << 1 | 0;
-			ft_printf("0");
-		}
-		i++;
+	(void)info;
+	if (sig == SIGUSR1)
+		c = c | 1;
+	g_byte++;
+	if (g_byte == 8)
+	{
+		if ((write(1, &c, 1)) == -1)
+			exit (-1);
+		g_byte = 0;
 	}
+	c = c << 1;
 }
 
-int	main()
+int	main(void)
 {
-	int	pid;
-	struct	sigaction signal;
+	int					pid;
+	struct sigaction	signal;
+
 	pid = getpid();
+	g_byte = 0;
 	printf("PID: %d\n", pid);
 	signal.sa_sigaction = ft_handle;
 	signal.sa_flags = SA_RESTART;

@@ -6,7 +6,7 @@
 /*   By: msindreu <msindreu@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 14:31:24 by msindreu          #+#    #+#             */
-/*   Updated: 2022/10/19 18:17:12 by msindreu         ###   ########.fr       */
+/*   Updated: 2022/10/20 18:29:55 by msindreu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 void	ft_get_and_send_bits(char c, int pid)
 {
 	int		i;
-	int	signal;
+	int		signal;
 
 	i = 0;
 	while (i < 8)
@@ -28,12 +28,12 @@ void	ft_get_and_send_bits(char c, int pid)
 			signal = SIGUSR1;
 		else
 			signal = SIGUSR2;
-		kill(pid,  signal);
+		if ((kill(pid, signal)) == -1)
+			exit (-1);
 		usleep(300);
 		i++;
 	}
 }
-
 
 int	main(int argc, char **argv)
 {
@@ -53,4 +53,3 @@ int	main(int argc, char **argv)
 	}
 	return (0);
 }
-

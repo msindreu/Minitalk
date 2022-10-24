@@ -18,7 +18,21 @@
 
 void	ft_handle(int sig)
 {
-	
+	static int	bits;
+
+	bits = 0;
+	if ( sig == SIGUSR2)
+	{
+		if (ft_printf("\r\e [1;34mSending [%d] bits\e[0m", bits) == -1)
+			exit(-1);
+		bits++;
+	}
+	if (sig == SIGUSR1)
+	{
+		if (ft_printf("\r\e [1;34mMessage finished at [%d] bits\e[0m", bits) == -1)
+			exit(-1);
+		exit(EXIT_SUCCESS);
+	}
 }
 
 void	ft_get_and_send_bits(char c, int pid)
@@ -48,6 +62,7 @@ int	main(int argc, char **argv)
 	if (argc == 3)
 	{
 		signal(SIGUSR1, ft_handle);
+		signal(SIGUSR2, ft_handle);
 		server_pid = ft_atoi(argv[1]);
 		i = 0;
 		while (argv[2][i] != '\0')

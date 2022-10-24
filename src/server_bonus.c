@@ -40,6 +40,11 @@ void	ft_handle(int sig, siginfo_t *info, void *context)
 	{
 		if ((write(1, &c, 1)) == -1)
 			exit (-1);
+		if ( c == '\0')
+		{
+			if ((kill(info->si_pid, SIGUSR1)) == -1)
+				exit (-1);
+		}
 		g_byte = 0;
 	}
 	c = c << 1;

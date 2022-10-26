@@ -10,12 +10,17 @@ CC = 		gcc
 
 LIBR = 		lib/ft_printf.h
 
+DEF_COLOR = \033[0;39m
+GRAY = \033[0;90m
+
 all:		$(NAME)
 
 %.o: %.c $(LIBR)
-	$(CC) $(FLAGS) $< -o $@
+	@$(CC) $(FLAGS) $< -o $@
+	@printf "\r⚙️  $(GRAY) ${CC} ${CFLAGS} -I./ -c $< -o $(DEF_COLOR)"
 
 $(NAME):	$(OBJS) $(LIBR)
+			@printf "\n"
 			@ar -rcs $(NAME) $^
 clean:
 			@rm -f	$(OBJS)

@@ -6,7 +6,7 @@
 /*   By: msindreu <msindreu@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 14:31:24 by msindreu          #+#    #+#             */
-/*   Updated: 2022/10/20 19:14:55 by msindreu         ###   ########.fr       */
+/*   Updated: 2022/10/26 11:15:17 by msindreu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,17 @@
 
 void	ft_handle(int sig)
 {
-	static int	bits;
+	static int	bits = 0;
 
-	bits = 0;
-	if ( sig == SIGUSR2)
-	{
-		if (ft_printf("\r\e [1;34mSending [%d] bits\e[0m", bits) == -1)
+	if (sig == SIGUSR2)
+	{	
+		if (ft_printf("\r\e[1;34mSending [%d] bits\e[0m", bits) == -1)
 			exit(-1);
 		bits++;
 	}
 	if (sig == SIGUSR1)
 	{
-		if (ft_printf("\r\e [1;34mMessage finished at [%d] bits\e[0m", bits) == -1)
+		if (ft_printf("\r\e[1;34mMessage finished at [%d] bits\e[0m", bits) == -1)
 			exit(-1);
 		exit(EXIT_SUCCESS);
 	}
@@ -47,7 +46,8 @@ void	ft_get_and_send_bits(char c, int pid)
 			signal = SIGUSR1;
 		else
 			signal = SIGUSR2;
-		if ((kill(pid, signal)) == -1)
+		usleep(200);
+		if (kill(pid, signal) == -1)
 			exit (-1);
 		usleep(300);
 		i++;
@@ -72,5 +72,7 @@ int	main(int argc, char **argv)
 		}
 		ft_get_and_send_bits('\0', server_pid);
 	}
+	while (1)
+		pause();
 	return (0);
 }

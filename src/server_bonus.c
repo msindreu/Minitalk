@@ -6,7 +6,7 @@
 /*   By: msindreu <msindreu@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 18:19:39 by msindreu          #+#    #+#             */
-/*   Updated: 2022/10/26 11:09:51 by msindreu         ###   ########.fr       */
+/*   Updated: 2022/11/02 11:45:22 by msindreu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,8 @@ void	ft_handle(int sig, siginfo_t *info, void *context)
 	(void)context;
 	usleep(100);
 	if (sig == SIGUSR2)
-	{
 		if (kill(info->si_pid, SIGUSR2) == -1)
 			exit (-1);
-	}
 	if (sig == SIGUSR1)
 	{
 		if (kill(info->si_pid, SIGUSR2) == -1)
@@ -41,10 +39,8 @@ void	ft_handle(int sig, siginfo_t *info, void *context)
 		if (write(1, &c, 1) == -1)
 			exit (-1);
 		if (c == '\0')
-		{
 			if (kill(info->si_pid, SIGUSR1) == -1)
 				exit (-1);
-		}
 		g_byte = 0;
 	}
 	c = c << 1;
